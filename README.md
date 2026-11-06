@@ -187,7 +187,7 @@ After keeping the four columns, dropping rows with missing values and removing d
 
 **Categories are not balanced**, only because they group different numbers of intents: `ACCOUNT` has the most (5,986 rows), followed by `ORDER` (3,988) and `REFUND` (2,992). Most others have close to 2,000, and `SUBSCRIPTION` (999) and `CANCEL` (950) have the fewest.
 
-![Examples per category](docs/figures/02_category_distribution.png)
+![Examples per category](ex_per_category.png)
 
 **Customer messages are short, responses are long.** Customer messages average 8.7 words (maximum 16), while responses average 104.8 words (median 90, maximum 402). The model therefore learns to produce long, polite, generic replies from very short prompts.
 
