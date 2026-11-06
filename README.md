@@ -183,19 +183,19 @@ After keeping the four columns, dropping rows with missing values and removing d
 
 **Intents are almost perfectly balanced.** All 27 intents have between 950 and 1,000 examples, so the model does not see one request type far more than another.
 
-![Examples per intent](ex_per_intent.png)
+![Examples per intent](images/ex_per_intent.png)
 
 **Categories are not balanced**, only because they group different numbers of intents: `ACCOUNT` has the most (5,986 rows), followed by `ORDER` (3,988) and `REFUND` (2,992). Most others have close to 2,000, and `SUBSCRIPTION` (999) and `CANCEL` (950) have the fewest.
 
-![Examples per category](ex_per_category.png)
+![Examples per category](images/ex_per_category.png)
 
 **Customer messages are short, responses are long.** Customer messages average 8.7 words (maximum 16), while responses average 104.8 words (median 90, maximum 402). The model therefore learns to produce long, polite, generic replies from very short prompts.
 
-![Length distributions](cust_mess_len.png)
+![Length distributions](images/cust_mess_len.png)
 
 **Token length sets `MAX_LEN`.** Measured on a 3,000-row sample with the Qwen tokenizer, the full prompt plus response has a median of 156 tokens, a 95th percentile of 311, a 99th percentile of 414 and a maximum of 498. A `MAX_LEN` of 512 therefore covers every example in the sample without truncation.
 
-![Token lengths](full_seq.png)
+![Token lengths](images/full_seq.png)
 
 ### Preparing the data
 
@@ -230,13 +230,13 @@ After keeping the four columns, dropping rows with missing values and removing d
 
 Validation loss fell steadily from 0.768 to 0.612 and was still flattening rather than rising at the end, so there are no signs of overfitting. Next-token accuracy rose from 76.7% to 80.6%.
 
-![Loss curve](qwen_loss_curve_finetune.png)
+![Loss curve](images/qwen_loss_curve_finetune.png)
 
-![Validation accuracy and perplexity](val_acc_val_perplexity_qwen_finetune.png)
+![Validation accuracy and perplexity](images/val_acc_val_perplexity_qwen_finetune.png)
 
 The learning rate follows the expected cosine decay, and the gradient norm stays between roughly 0.65 and 1.1 with no spikes, so training was stable.
 
-![Learning rate and gradient norm](lr_scehduler_grad_norm_qwen_finetune.png)
+![Learning rate and gradient norm](images/lr_scehduler_grad_norm_qwen_finetune.png)
 
 ## Why the fine-tuned model was dropped
 
