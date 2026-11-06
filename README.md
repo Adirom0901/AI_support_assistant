@@ -183,7 +183,7 @@ After keeping the four columns, dropping rows with missing values and removing d
 
 **Intents are almost perfectly balanced.** All 27 intents have between 950 and 1,000 examples, so the model does not see one request type far more than another.
 
-![Examples per intent](docs/figures/01_intent_distribution.png)
+![Examples per intent](ex_per_intent.png)
 
 **Categories are not balanced**, only because they group different numbers of intents: `ACCOUNT` has the most (5,986 rows), followed by `ORDER` (3,988) and `REFUND` (2,992). Most others have close to 2,000, and `SUBSCRIPTION` (999) and `CANCEL` (950) have the fewest.
 
