@@ -1,0 +1,13 @@
+# Use together with the main file:
+#   docker compose -f docker-compose.yml -f docker-compose.gpu.yml up --build
+# Requires an NVIDIA GPU + NVIDIA Container Toolkit on the host.
+services:
+  api:
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+ 

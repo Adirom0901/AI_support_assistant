@@ -1,0 +1,43 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+      args:
+        TORCH_INDEX_URL: ${TORCH_INDEX_URL:-}
+    env_file: .env
+    environment:
+      ORDERS_DB: /data/orders.db
+      CHECKPOINT_DB: /data/qwen_assistant.db
+    volumes:
+      - app_data:/data                          # orders + chat history survive restarts
+      - hf_cache:/root/.cache/huggingface       # model is downloaded once
+      # To use a model folder from your machine instead of downloading:
+      # - ./models:/models:ro      (then set MODEL_PATH=/models/<folder> in .env)
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 120s                        # model loading takes a while
+    restart: unless-stopped
+ 
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    environment:
+      API_URL: http://api:8000
+      API_KEY: ${API_KEY:-}
+    ports:
+      - "8501:8501"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+ 
+volumes:
+  app_data:
+  hf_cache:

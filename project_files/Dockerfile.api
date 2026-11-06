@@ -1,0 +1,29 @@
+FROM python:3.14-slim
+ 
+ENV PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    HF_HOME=/root/.cache/huggingface
+ 
+WORKDIR /app
+ 
+# Torch: default PyPI build works on CPU and NVIDIA GPU (large download).
+# For a smaller CPU-only image: docker compose build --build-arg TORCH_INDEX_URL=https://download.pytorch.org/whl/cpu
+ARG TORCH_INDEX_URL=
+RUN if [ -n "$TORCH_INDEX_URL" ]; then \
+        pip install torch --index-url "$TORCH_INDEX_URL"; \
+    else \
+        pip install torch; \
+    fi
+ 
+# Clean requirements.txt (handles UTF-16/BOM/CRLF from Windows) and skip torch/nvidia/Windows-only lines.
+COPY requirements.txt .
+RUN tr -d '\000\377\376\357\273\277' < requirements.txt | tr -d '\r' \
+    | grep -viE '^(torch|nvidia-|triton|pywin32|pypiwin32)' > requirements.docker.txt \
+    && pip install -r requirements.docker.txt
+ 
+COPY api.py model.py nodes.py graph.py state.py tools.py database.py init_db.py ./
+ 
+EXPOSE 8000
+ 
+# Seed the orders DB (idempotent), then start ONE worker (each worker would load its own model copy).
+CMD ["sh", "-c", "python init_db.py && exec uvicorn api:app --host 0.0.0.0 --port 8000"]
