@@ -191,7 +191,7 @@ After keeping the four columns, dropping rows with missing values and removing d
 
 **Customer messages are short, responses are long.** Customer messages average 8.7 words (maximum 16), while responses average 104.8 words (median 90, maximum 402). The model therefore learns to produce long, polite, generic replies from very short prompts.
 
-![Length distributions](docs/figures/03_length_distributions.png)
+![Length distributions](cust_mess_len.png)
 
 **Token length sets `MAX_LEN`.** Measured on a 3,000-row sample with the Qwen tokenizer, the full prompt plus response has a median of 156 tokens, a 95th percentile of 311, a 99th percentile of 414 and a maximum of 498. A `MAX_LEN` of 512 therefore covers every example in the sample without truncation.
 
