@@ -236,7 +236,7 @@ Validation loss fell steadily from 0.768 to 0.612 and was still flattening rathe
 
 The learning rate follows the expected cosine decay, and the gradient norm stays between roughly 0.65 and 1.1 with no spikes, so training was stable.
 
-![Learning rate and gradient norm](docs/figures/07_lr_gradnorm.png)
+![Learning rate and gradient norm](lr_scehduler_grad_norm_qwen_finetune.png)
 
 ## Why the fine-tuned model was dropped
 
