@@ -263,14 +263,14 @@ Changing from full to partial fine-tuning would reduce forgetting but would not 
 
 | Problem | Likely cause and fix |
 |---|---|
-| Replies still contain `{{Order Number}}` | You are loading the fine-tuned model. Check the model path your app actually loads, and if you use `load_dotenv`, use `override=True` so `.env` wins over stale environment variables |
-| `uvicorn: not found` and the API restarts in a loop | `uvicorn`/`fastapi` are missing from the image. Rebuild with `docker compose build api` and check the "packages from requirements.txt" line in the build log |
-| `Could not find a version that satisfies the requirement networkx==3.7` | The container Python is older than the one you froze packages on. Set `PYTHON_VERSION` in `.env` |
-| `dependency failed to start: ... is unhealthy` | The model is still downloading or loading, or the API crashed. Run `docker compose logs api`. The healthcheck waits about 7 minutes, so on a slow first download just start again |
+| Replies still contain `{{Order Number}}` | I was loading the fine-tuned model. Checked the model path my app actually loaded, and found that if you use `load_dotenv`, use `override=True` so `.env` wins over stale environment variables |
+| `uvicorn: not found` and the API restarts in a loop | `uvicorn`/`fastapi` are missing from the image. Rebuilt with `docker compose build api` and checked the "packages from requirements.txt" line in the build log |
+| `Could not find a version that satisfies the requirement networkx==3.7` | The container Python is older than the one i froze packages on. Set `PYTHON_VERSION` in `.env` |
+| `dependency failed to start: ... is unhealthy` | The model is still downloading or loading, or the API crashed. Ran `docker compose logs api`. The healthcheck waits about 7 minutes, so on a slow first download just start again |
 | Container exits with code 137 | Out of memory. Give Docker more RAM or use `Qwen/Qwen2.5-0.5B-Instruct` |
 | `error reading from server: EOF` during build | Docker's engine crashed, usually from memory or disk pressure during the torch download. Restart Docker Desktop, free disk space, and use the CPU torch index |
 | UI says the backend is offline | The API is still loading the model. Watch `docker compose logs -f api` for `Application startup complete` |
-| `.env` Windows path does not work in Docker | Use a Hugging Face name, or mount the folder and use its container path |
+
 
 ## Deployment notes
 
@@ -278,7 +278,7 @@ Running the containers on your laptop is not a public deployment. To make it ava
 
 ## Roadmap
 
-- Rebuild the fine-tuning data in tool-calling format: user message with an order ID, then a `<tool_call>`, then the tool result, then a final answer with real values. Use LoRA on Qwen2.5-1.5B, keep only a small share of cleaned Bitext rows (no `{{...}}`), and compare against the base model on a held-out set of order questions.
+- Rebuilt the fine-tuning data in tool-calling format: user message with an order ID, then a `<tool_call>`, then the tool result, then a final answer with real values. Use LoRA on Qwen2.5-1.5B, keep only a small share of cleaned Bitext rows (no `{{...}}`), and compare against the base model on a held-out set of order questions.
 - More tools: cancel order, refund status, return policy lookup.
 - Token streaming in the UI using `TextIteratorStreamer`.
 - Automated tests for tool-call parsing and the order lookup.
