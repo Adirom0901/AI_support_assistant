@@ -232,7 +232,7 @@ Validation loss fell steadily from 0.768 to 0.612 and was still flattening rathe
 
 ![Loss curve](qwen_loss_curve_finetune.png)
 
-![Validation accuracy and perplexity](docs/figures/06_accuracy_perplexity.png)
+![Validation accuracy and perplexity](val_acc_val_perplexity_qwen_finetune.png)
 
 The learning rate follows the expected cosine decay, and the gradient norm stays between roughly 0.65 and 1.1 with no spikes, so training was stable.
 
