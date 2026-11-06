@@ -195,7 +195,7 @@ After keeping the four columns, dropping rows with missing values and removing d
 
 **Token length sets `MAX_LEN`.** Measured on a 3,000-row sample with the Qwen tokenizer, the full prompt plus response has a median of 156 tokens, a 95th percentile of 311, a 99th percentile of 414 and a maximum of 498. A `MAX_LEN` of 512 therefore covers every example in the sample without truncation.
 
-![Token lengths](docs/figures/04_token_length.png)
+![Token lengths](full_seq.png)
 
 ### Preparing the data
 
