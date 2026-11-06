@@ -97,67 +97,7 @@ How one request flows:
 └── docs/figures/             Dataset and training plots used in this README
 ```
 
-You also need a `requirements.txt` in the project root (create it with `pip freeze`, see below). It is not committed here because it depends on your environment.
 
-## Quick start (Docker)
-
-**Prerequisites:** Docker Desktop (Windows/Mac) or Docker Engine with the compose plugin (Linux), about 10 GB free disk, and 6 to 8 GB of RAM available to Docker for the 1.5B model on CPU.
-
-```bash
-git clone <your-repo-url>
-cd <your-repo-folder>
-
-# 1. Create requirements.txt from a virtual environment that has the project installed
-pip freeze > requirements.txt        # PowerShell: pip freeze | Out-File -Encoding ascii requirements.txt
-
-# 2. Create your config
-cp .env.example .env                 # Windows: copy .env.example .env
-
-# 3. Build and start
-docker compose up --build
-```
-
-- Chat UI: <http://localhost:8501>
-- API docs: <http://localhost:8000/docs>
-
-The first start downloads the model (about 3 GB for Qwen2.5-1.5B) into a Docker volume and loads it, which can take several minutes. Later starts reuse the cache.
-
-**Match the Python version.** The containers use Python 3.12 by default. If your `requirements.txt` was frozen on another version, set it in `.env`, for example `PYTHON_VERSION=3.13` (check with `python --version`). Pinned packages such as `networkx==3.7` need Python 3.12 or newer.
-
-**NVIDIA GPU:**
-
-```bash
-docker compose -f docker-compose.yml -f docker-compose.gpu.yml up --build
-```
-
-**CPU-only, smaller image:** add `TORCH_INDEX_URL=https://download.pytorch.org/whl/cpu` to `.env` before the first build.
-
-Useful commands:
-
-| Task | Command |
-|---|---|
-| Start in the background | `docker compose up -d` |
-| Stop | `docker compose down` |
-| API logs | `docker compose logs -f api` |
-| Rebuild after code changes | `docker compose up --build` |
-| Wipe data, history and model cache | `docker compose down -v` |
-
-## Run without Docker
-
-```bash
-python -m venv .venv
-source .venv/bin/activate            # Windows: .venv\Scripts\activate
-pip install torch
-pip install fastapi "uvicorn[standard]" streamlit requests transformers accelerate \
-            python-dotenv langchain-core langgraph langgraph-checkpoint-sqlite
-
-cp .env.example .env
-python init_db.py                    # creates orders.db
-uvicorn api:app --port 8000          # terminal 1
-streamlit run frontend.py            # terminal 2
-```
-
-Or chat in the terminal only: `python main.py`.
 
 ## Configuration
 
@@ -343,9 +283,8 @@ Running the containers on your laptop is not a public deployment. To make it ava
 - Token streaming in the UI using `TextIteratorStreamer`.
 - Automated tests for tool-call parsing and the order lookup.
 
-## Credits and licenses
+## Credits 
 
 - Dataset: Bitext Gen AI Chatbot Customer Support Dataset. Check the license on the dataset's page before reuse.
 - Models: Qwen2.5 by Alibaba Cloud (Apache 2.0 for most sizes; check the license of the exact model you use).
 - Built with LangGraph, FastAPI, Streamlit, Hugging Face Transformers and PEFT.
-- Add a `LICENSE` file for your own code before publishing.
