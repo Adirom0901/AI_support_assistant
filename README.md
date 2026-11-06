@@ -230,7 +230,7 @@ After keeping the four columns, dropping rows with missing values and removing d
 
 Validation loss fell steadily from 0.768 to 0.612 and was still flattening rather than rising at the end, so there are no signs of overfitting. Next-token accuracy rose from 76.7% to 80.6%.
 
-![Loss curve](docs/figures/05_loss_curve.png)
+![Loss curve](qwen_loss_curve_finetune.png)
 
 ![Validation accuracy and perplexity](docs/figures/06_accuracy_perplexity.png)
 
